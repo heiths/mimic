@@ -33,8 +33,8 @@ class FastlyApi(object):
 
     def __init__(self, core):
         """
-        :param MimicCore core: The core to which this AuthApi will be
-            authenticating.
+        :param MimicCore core: The core to which this FastlyApi will be
+            communicating.
         """
         self.core = core
         self.services = {}

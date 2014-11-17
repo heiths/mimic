@@ -1,0 +1,65 @@
+# -*- test-case-name: mimic.test.test_auth -*-
+"""
+Defines get current customer
+"""
+
+import json
+
+from twisted.web.server import Request
+
+from mimic.rest.mimicapp import MimicApp
+from mimic.canned_responses.akamai import (create_policy,
+                                           delete_policy,
+                                           get_policy)
+
+Request.defaultContentType = 'application/json'
+
+
+class AkamaiApi(object):
+    """
+    Rest endpoints for mocked Akamai api.
+    """
+
+    app = MimicApp()
+
+    def __init__(self, core):
+        """
+        :param MimicCore core: The core to which this AkamaiApi will be
+            communicating.
+        """
+        self.core = core
+        self.services = {}
+
+    @app.route('/partner-api/v1/network/production/properties/'
+               '<string:customer_id>/sub-properties/'
+               '<string:policy_name>/policy',
+               methods=['PUT'])
+    def create_policy(self, request, customer_id, policy_name):
+        """
+        Returns PUT policy.
+        """
+        data = request.content.read()
+        response = create_policy(data, customer_id, policy_name)
+        return json.dumps(response[0])
+
+    @app.route('/partner-api/v1/network/production/properties/'
+               '<string:customer_id>/sub-properties/'
+               '<string:policy_name>/policy',
+               methods=['GET'])
+    def get_policy(self, request, customer_id, policy_name):
+        """
+        Returns POST Service.
+        """
+        response = get_policy(policy_name)
+        return json.dumps(response)
+
+    @app.route('/partner-api/v1/network/production/properties/'
+               '<string:customer_id>/sub-properties/'
+               '<string:policy_name>/policy',
+               methods=['DELETE'])
+    def delete_policy(self, request, customer_id, policy_name):
+        """
+        Returns DELETE Policy.
+        """
+        response = delete_policy(customer_id, policy_name)
+        return json.dumps(response)

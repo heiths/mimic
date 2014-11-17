@@ -11,6 +11,7 @@ from mimic.canned_responses.mimic_presets import get_presets
 from mimic.rest.mimicapp import MimicApp
 from mimic.rest.auth_api import AuthApi, base_uri_from_request
 from mimic.rest import fastly_api
+from mimic.rest import akamai_api
 from mimic.util.helper import fmt
 
 
@@ -53,6 +54,13 @@ class MimicRoot(object):
         Get the Fastly API ...
         """
         return fastly_api.FastlyApi(self.core).app.resource()
+
+    @app.route("/akamai", branch=True)
+    def get_akamai_api(self, request):
+        """
+        Get the Akamai API ...
+        """
+        return akamai_api.AkamaiApi(self.core).app.resource()
 
     @app.route('/mimic/v1.0/presets', methods=['GET'])
     def get_mimic_presets(self, request):
