@@ -8,9 +8,7 @@ import json
 from twisted.web.server import Request
 
 from mimic.rest.mimicapp import MimicApp
-from mimic.canned_responses.akamai import (create_policy,
-                                           delete_policy,
-                                           get_policy)
+from mimic.canned_responses import akamai
 
 Request.defaultContentType = 'application/json'
 
@@ -29,6 +27,7 @@ class AkamaiApi(object):
         """
         self.core = core
         self.services = {}
+        self.akamai_response = akamai.AkamaiResponse()
 
     @app.route('/partner-api/v1/network/production/properties/'
                '<string:customer_id>/sub-properties/'
@@ -39,7 +38,8 @@ class AkamaiApi(object):
         Returns PUT policy.
         """
         data = request.content.read()
-        response = create_policy(data, customer_id, policy_name)
+        response = self.akamai_response.create_policy(data,
+                                                      customer_id, policy_name)
         return json.dumps(response[0])
 
     @app.route('/partner-api/v1/network/production/properties/'
@@ -50,7 +50,7 @@ class AkamaiApi(object):
         """
         Returns POST Service.
         """
-        response = get_policy(policy_name)
+        response = self.akamai_response.get_policy(policy_name)
         return json.dumps(response)
 
     @app.route('/partner-api/v1/network/production/properties/'
@@ -61,5 +61,5 @@ class AkamaiApi(object):
         """
         Returns DELETE Policy.
         """
-        response = delete_policy(customer_id, policy_name)
+        response = self.akamai_response.delete_policy(customer_id, policy_name)
         return json.dumps(response)
