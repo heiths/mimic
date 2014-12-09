@@ -2,6 +2,9 @@
 Canned response for Akamai
 """
 import json
+import random
+import string
+import uuid
 
 
 class AkamaiResponse(object):
@@ -48,4 +51,26 @@ class AkamaiResponse(object):
             "message": "Successfully deleted",
             "description": description}
 
+        return response_body
+     
+    def purge_content(self):
+        """Returns service details json.
+
+        :return: a JSON-serializable dictionary matching the format of the JSON
+                 response for Akamai CCU API POST
+                 ("/ccu/v2/queues/default") request.
+        """
+        purgeId = uuid.uuid1()
+        supportId = ''.join([random.choice(string.ascii_letters + string.digits) 
+                             for n in xrange(30)]).upper()
+        response_body = {
+            "estimatedSeconds": 420,
+            "progressUri": "/ccu/v2/purges/%s" % str(purgeId),
+            "purgeId": str(purgeId), 
+            "supportId": supportId, 
+            "httpStatus": 201, 
+            "detail": "Request accepted.", 
+            "pingAfterSeconds": 420         
+        }
+        
         return response_body

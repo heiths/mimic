@@ -63,3 +63,14 @@ class AkamaiApi(object):
         """
         response = self.akamai_response.delete_policy(customer_id, policy_name)
         return json.dumps(response)
+    
+    
+    @app.route('/ccu/v2/queues/default',
+               methods=['POST'])
+    def purge_content(self, request):
+        """
+        Returns DELETE Policy.
+        """
+        request.setResponseCode(201)
+        response = self.akamai_response.purge_content()
+        return json.dumps(response)
