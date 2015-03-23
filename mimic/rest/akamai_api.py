@@ -74,3 +74,30 @@ class AkamaiApi(object):
         request.setResponseCode(201)
         response = self.akamai_response.purge_content()
         return json.dumps(response)
+      
+    @app.route('/config-secure-provisioning-service/v1'
+               '/sps-requests/',
+               methods=['POST'])
+    def sps_post(self, request):
+        """
+        Akamai Secure Provisioning Service endpoint.
+        """
+        request.setResponseCode(201)
+        response = json.dumps({
+            "requestList":
+                [{"resourceUrl": "/config-secure-provisioning-service/"
+                                 "v1/sps-requests/1849",
+                 "lastStatusChange": "2015-03-19T21:47:10Z",
+                    "spsId": 1789,
+                    "status": "SUCCESS",
+                    "jobId": 44306}]})
+        return json.dumps(response)
+    
+    @app.route('/config-secure-provisioning-service/v1'
+               '/sps-requests/<string:spsId>',
+               methods=['GET'])
+    def sps_get(self, request, spsId):
+        """
+        Akamai Secure Provisioning Service endpoint.
+        """
+        return "Hello World"
