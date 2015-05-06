@@ -87,7 +87,7 @@ class AkamaiApi(object):
         spsId = random.randint(999,9999)
         jobId = random.randint(9999,99999)
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-        request.setResponseCode(201)
+        request.setResponseCode(202)
         response = {
             "requestList":
                 [{"resourceUrl": "/config-secure-provisioning-service/"
@@ -174,7 +174,7 @@ class AkamaiApi(object):
     def post_new_version(self, request, propertyId):
         
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-        request.setResponseCode(200)
+        request.setResponseCode(201)
         response = {
           "versionLink": "/papi/v0/properties/%s/versions/6?"
                          "contractId=ctr_C-2M6JYA&groupId=grp_23174" % propertyId
