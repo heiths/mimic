@@ -89,13 +89,21 @@ class AkamaiApi(object):
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
         request.setResponseCode(202)
         response = {
-            "requestList":
-                [{"resourceUrl": "/config-secure-provisioning-service/"
+            "spsId": spsId,
+            "resourceLocation": "/config-secure-provisioning-service/"
                                  "v1/sps-requests/%s" % str(spsId),
-                 "lastStatusChange": now,
-                    "spsId": spsId,
-                    "status": "SUCCESS",
-                    "jobId": jobId}]}
+            "Results": {
+                "size" : 1,
+                "data": [{
+                    "text": None,
+                    "results": {
+                        "type": "SUCCESS",
+                        "jobID": jobId
+                    }
+                }]
+            }
+
+        }
         return json.dumps(response)
     
     @app.route('/config-secure-provisioning-service/v1'
@@ -142,7 +150,7 @@ class AkamaiApi(object):
         }
         return json.dumps(response)
     
-    @app.route('/papi/v0/properties/<string:propertyId>/versions/<string:version>',
+    @app.route('/papi/v0/properties/<string:propertyId>/versions/<string:version>/',
                methods=['GET'])
     def get_version_detail(self, request, propertyId, version):
         
@@ -181,7 +189,7 @@ class AkamaiApi(object):
         }
         return json.dumps(response)
     
-    @app.route('/papi/v0/properties/edgehostnames/',
+    @app.route('/papi/v0/edgehostnames/',
                methods=['GET'])
     def get_edgehost_names(self, request):
         request.setResponseCode(200)
