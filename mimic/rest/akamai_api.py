@@ -189,6 +189,29 @@ class AkamaiApi(object):
         }
         return json.dumps(response)
     
+    @app.route('/papi/v0/properties/<string:propertyId>/activations/',
+               methods=['POST'])
+    def post_new_activation(self, request, propertyId):
+        request.setResponseCode(201)
+        actvId = random.randint(0,99)
+        response = {
+          'activationLink': "/papi/v0/properties/%s/activations/%s" % (
+                propertyId,  "".join(['actv', str(actvId)])
+            )
+        }
+        return json.dumps(response)
+    
+    
+    @app.route('/papi/v0/properties/<string:propertyId>/activations/'
+               '<string:activationId>/',
+               methods=['GET'])
+    def check_activation_status(self, request, propertyId, activationId):
+        request.setResponseCode(200)
+        response = {
+          'status': "SUCCESS"
+        }
+        return json.dumps(response)
+    
     @app.route('/papi/v0/edgehostnames/',
                methods=['GET'])
     def get_edgehost_names(self, request):
@@ -212,6 +235,13 @@ class AkamaiApi(object):
                   "ipVersionBehavior" : "IPV6_COMPLIANCE",
                   "secure" : False,
                   "edgeHostnameDomain" : "a0.rackcdn.com.mdc.edgesuite.net"
+                },{
+                  "edgeHostnameId" : "ehn_286688",
+                  "domainPrefix" : "test2.cnamecdn.com",
+                  "domainSuffix" : "edgekey.net",
+                  "ipVersionBehavior" : "IPV4",
+                  "secure" : False,
+                  "edgeHostnameDomain" : "test2.cnamecdn.com.edgekey.net"
                 }]
             }
         }
@@ -268,6 +298,11 @@ class AkamaiApi(object):
               "edgeHostnameId" : "ehn_1217864",
               "cnameFrom" : "secure7.san1.raxcdn.com",
               "cnameTo" : "secure7.san1.raxcdn.com.edgekey.net"
+            },{
+              "cnameType" : "EDGE_HOSTNAME",
+              "edgeHostnameId" : "ehn_286688",
+              "cnameFrom" : "test2.cnamecdn.com",
+              "cnameTo" : "test2.cnamecdn.com.edgekey.net"
             } ]
           }
         }
